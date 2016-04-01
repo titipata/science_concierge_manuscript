@@ -6,6 +6,7 @@
 \usepackage{graphicx}
 \graphicspath{{figures/}}
 \usepackage{caption}
+\usepackage{authblk}
 
 \hypersetup{
   pdfinfo={
@@ -19,7 +20,15 @@
 
 
 \title{Science Concierge: A fast content-based recommendation system for scientific publicationse}
-\author{Titipat Achakulvisut\textsuperscript{1*}, Daniel E. Acuna\textsuperscript{1,2}, \\  Tulakan Ruangrong\textsuperscript{3}, Konrad Kording\textsuperscript{1,2}}
+
+\author[1]{Titipat Achakulvisut\thanks{titipat.a@u.northwestern.edu}}
+\author[3]{Daniel E. Acuna\thanks{This work is done when author is at Rehabilitation Institute of Chicago and Northwestern University}}
+\author[4]{Tulakan Ruangrong}
+\author[1,2]{Konrad Kording}
+\affil[1]{Northwestern University}
+\affil[2]{Rehabilitation Institute of Chicago}
+\affil[3]{Syracuse University}
+\affil[4]{Mahidol University}
 
 
 \begin{document}
@@ -43,7 +52,7 @@ Here we introduce Science Concierge (\href{https://github.com/titipata/science_c
 
 We tuned and tested the algorithm on a collection of scientific posters from the largest Neuroscience conference in the world, Society for Neuroscience (SfN) 2015. First, we cross-validated the LSA model to capture most of the variance contained in the topics. Second, we tuned the parameters of the algorithm to recommend posters that maximally resembled human curated classifications into poster sessions. We showed that our algorithm significantly outperformed a popular alternative based on keywords, improving suggestions further as it learned more from the user. A front-end interface that uses the algorithm in the back end is available at \href{http://www.scholarfy.net}{\texttt{http://www.scholarfy.net}}, where we used data from Society for Neuroscience (SfN) 2015 conference.
 
-\section{Materials and methods}
+\section{Materials and methods} \label{methods}
 
 \subsection{Conference dataset}
 
@@ -133,33 +142,36 @@ We found that voting as non-relevant those posters that are 1 distance away prod
 
 \begin{figure}[!ht]
 \centering
+\includegraphics[width=5in]{alpha_beta_relation}
 \caption*{\textbf{Fig 3.} \textbf{Finding best parameters to weigh relevant and non-relevant votes}. Performance of the system as a function alpha and beta parameters for non-relevant documents that are 1 distance away (A), 2 dislike distance away (B), and 3 dislike distance away (C) in human curated topics.}
 \end{figure}
 
 \subsection{Algorithm comparison}
 
-In this section, we compare the performance of our algorithm against common alternatives. Our algorithm requires the use of abstracts, a significantly more complex data source than keywords, for example. However, using the full abstract could capture variability that is not available in other simpler methods. To properly test the advantages of our approach, we cross validate the performance of our method by using human curated topic distances as a performance metric (see Methods).
+In this section, we compare the performance of our algorithm against common alternatives. Our algorithm requires the use of abstracts, a significantly more complex data source than keywords, for example. However, using the full abstract could capture variability that is not available in other simpler methods. To properly test the advantages of our approach, we cross validate the performance of our method by using human curated topic distances as a performance metric (see section  \ref{methods}).
 
 For each of the algorithms tested below, we do the following simulation to estimate their performances. For each run of a simulation, we pick a poster at random and vote it as relevant. Then, we ask the algorithm to suggest ten posters based on that vote. We compute the average distance in human curated topic space between the suggestions and the liked poster. We then vote for another poster randomly selected from the same human curated topic as the first poster. We again ask the algorithm to suggest a set of ten posters and again we compute the average distance. We repeat this process many times to obtain the average distance to human curated topics as a function of the number of votes. This simulation will help us understand the performance of the algorithms as they gather more votes from a simulated user.
 
 As a baseline for all comparisons, we compute the performance of a null model that suggests posters at random. This is necessary because the distribution of human curated topics is not uniform and therefore the distances could be distributed in unexpected ways. Not surprisingly, the average distance to the human curated topic remained constant with the number of votes (Fig. 4, Random) but it was below 3, which is the farthest possible distance. This baseline will allow us to compare performance against a proper null model.
 
-Keywords are a common recommendation technique that relies on using human curated “tags” for each document. In our dataset (see Materials), the authors themselves assigned multiple keywords by picking them from a predefined set crafted by the organizers. We used these keywords to produce recommendations by simply using them as documents. We then model keyword counts by transforming them from the tf-idf matrix to 30 SVD dimensions. Preliminary analysis revealed that 30 dimensions was an appropriate number to capture most of the variability. Suggestions using keywords perform significantly better than random suggestions (paired $t(4999) = 74.74$, $p < 0.0001$) and keyword suggestion performance improves with the number of votes (paired $t(4998) = -4.428$, $p < 0.0001$, Fig. 4). While keywords allow for better suggestions than the null model, authors would need to manually provide them.
+Keywords are a common recommendation technique that relies on using human curated “tags” for each document. In our dataset (see section \ref{methods}), the authors themselves assigned multiple keywords by picking them from a predefined set crafted by the organizers. We used these keywords to produce  recommendations by simply using them as documents. We then model keyword counts by transforming them from the tf-idf matrix to 30 SVD dimensions. Preliminary analysis revealed that 30 dimensions was an appropriate number to capture most of the variability. Suggestions using keywords perform significantly better than random suggestions (paired $t(4999) = 74.74$, $p < 0.0001$) and keyword suggestion performance improves with the number of votes (paired $t(4998) = -4.428$, $p < 0.0001$, Fig. 4). While keywords allow for better suggestions than the null model, authors would need to manually provide them.
 
 Science Concierge uses the abstracts to automatically extract topics and provide suggestions. We found that Science Concierge produces significantly better suggestions than keywords (Fig. 4, paired $t(4999) = 78.95$, $p < 0.0001$). We found that the performance significantly improves as the system learns more about a user ($t(4998) = -31.6, p < 0.001$). Moreover, we found that Science Concierge improves with votes significantly faster than the keyword model ($t(9997) = –66.28$, $p < 0.0001$). Scholar Concierge thus does not require humans to provide keywords and improves the recommendation as more votes are provided.
 
 
 \begin{figure}[!ht]
 \centering
+\includegraphics[width=3.5in]{performance_vs_vote}
 \caption*{\textbf{Fig 4.} \textbf{Comparison of algorithms as they learn more from a simulated user}. Random suggestions’ performance is not necessarily 3 distance away in the topic tree, but remain constant with more votes. Keywords improve suggestions but Science concierge significantly improves upon that and event further with votes.}
 \end{figure}
 
 Ideally, we want distances between documents induced by an algorithm to closely match the distances induced by human curated topics. Here, we tested this idea using the keyword model and the Science Concierge model. This is, we tested the correlation between the distance of two random documents using a model and the distance of those same documents in human curated topic space. We found that the Spearman rank correlation between these measures was significantly positive for both models ($p < 0.0001$) and that the correlation of the Science Concierge model ($\rho=0.442$) was significantly higher than the correlation of the keyword model ($\rho=0.164$), $p < 0.001$. To compare these relationships on a similar scale, we visualized the human curated distance vs. the z-score of the model’s distances (Fig. 5). Both measures reproduce human distances, but Science Concierge is better overall.
 
-Fig. 5 Relationship between human curated distance and topic distance induced by the keyword and Science Concierge models. Both models correlate well, but Science Concierge is significantly better.
 
 \begin{figure}[!ht]
-\textbf{Fig 5.} \textbf{Relationship between human curated distance and topic distance induced by the keyword and Science Concierge models}. Both models correlate well, but Science Concierge is significantly better.
+\centering
+\includegraphics[width=3.5in]{human_vs_topic_distance}
+\caption*{\textbf{Fig 5.} \textbf{Relationship between human curated distance and topic distance induced by the keyword and Science Concierge models}. Both models correlate well, but Science Concierge is significantly better.}
 \end{figure}
 
 
