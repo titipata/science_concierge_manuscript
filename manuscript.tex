@@ -2,6 +2,11 @@
 \usepackage[a4paper, margin=1.5in]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage{hyperref}
+\usepackage{cite}
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{caption}
+
 \hypersetup{
   pdfinfo={
     Title={Science Concierge: A fast content-based recommendation system for scientific publicationse},
@@ -14,10 +19,7 @@
 
 
 \title{Science Concierge: A fast content-based recommendation system for scientific publicationse}
-\author{Titipat Achakulvisut\textsuperscript{1*}, Daniel E. Acuna\textsuperscript{1,2}, \\  Tulakan Ruangrong\textsuperscript{3}, Konrad Kording\textsuperscript{1,2}\\
-\textsuperscript{1}Northwestern University,\\
-\textsuperscript{2}Rehabilitation Institute of Chicago, \\
-\textsuperscript{3}Mahidol University}
+\author{Titipat Achakulvisut\textsuperscript{1*}, Daniel E. Acuna\textsuperscript{1,2}, \\  Tulakan Ruangrong\textsuperscript{3}, Konrad Kording\textsuperscript{1,2}}
 
 
 \begin{document}
@@ -30,13 +32,13 @@ Finding relevant publications or presentations matters to scientists who have to
 
 \section{Introduction}
 
-Recommendation systems are routinely used to suggest items based on customers’ past preferences. These systems have proven useful for music, movies, news, and retail in general [1]. In contrast, to find new scientific literature, researchers rely mostly on author-provided keywords, titles, author names, and references. These procedures are likely to be biased [2] and also provide a rich get richer (or Matthew) effects [3]. Moreover, this problem is more pronounced during conferences where appropriate keywords may not even exist, let alone citations. An application of recommendation systems to suggest scholarly material based on the researcher’s preferences thus promises to speed up literature search and increase relevance.
+Recommendation systems are routinely used to suggest items based on customers’ past preferences. These systems have proven useful for music, movies, news, and retail in general \cite{manning2008introduction}. In contrast, to find new scientific literature, researchers rely mostly on author-provided keywords, titles, author names, and references. These procedures are likely to be biased \cite{chavalarias2010science} and also provide a rich get richer (or Matthew) effects \cite{petersen2011quantitative}. Moreover, this problem is more pronounced during conferences where appropriate keywords may not even exist, let alone citations. An application of recommendation systems to suggest scholarly material based on the researcher’s preferences thus promises to speed up literature search and increase relevance.
 
 
-There are multiple recommendation systems that use either the personal preferences of a new user (e.g., content-based recommendations) or exploit the similarity between the new users’ preferences and previous users’ preferences (e.g., collaborative filtering). Most such system are available for commercial software, such as news [4], movie [5], and music [6] applications. In contrast, few projects address scientific literature search. In [7], the authors presented a content-based recommendation system that works on PubMed datasets. In [8], the Scienstein system combined a large set of criteria for providing literature recommendation. In [9], the authors presented a topic-based recommendation system based on a Latent Dirichlet Allocation (LDA) model. It is unclear, however, how well these systems work, and how well they scale to large problems, and their source code is generally not available.
+There are multiple recommendation systems that use either the personal preferences of a new user (e.g., content-based recommendations) or exploit the similarity between the new users’ preferences and previous users’ preferences (e.g., collaborative filtering). Most such system are available for commercial software, such as news \cite{li2010contextual}, movie \cite{bell2007lessons}, and music \cite{Ali11parallelcollaborative} applications. In contrast, few projects address scientific literature search. In \cite{yoneya2007pure}, the authors presented a content-based recommendation system that works on PubMed datasets. In \cite{gipp2009scienstein}, the Scienstein system combined a large set of criteria for providing literature recommendation. In \cite{wang2011collaborative}, the authors presented a topic-based recommendation system based on a Latent Dirichlet Allocation (LDA) model. It is unclear, however, how well these systems work, and how well they scale to large problems, and their source code is generally not available.
 
 
-Here we introduce Science Concierge (\href{https://github.com/titipata/science_concierge}{\texttt{github.com/titipata/science\_concierge}}), an open source Python library that implements a fast and accurate recommendation system for literature search. Briefly, the library uses a scalable vectorization of documents through online Latent Semantic Analysis (LSA) [1]. For the recommendation part, it pairs the Rocchio Algorithm [10] with a large-scale approximate nearest neighbor search based on ball trees [11]. The library aims at providing responsive content-based recommendations utilizing only user’s votes. Science Concierge, then, provides an open source solution to content-based scientific discovery.
+Here we introduce Science Concierge (\href{https://github.com/titipata/science_concierge}{\texttt{github.com/titipata/science\_concierge}}), an open source Python library that implements a fast and accurate recommendation system for literature search. Briefly, the library uses a scalable vectorization of documents through online Latent Semantic Analysis (LSA) \cite{manning2008introduction}. For the recommendation part, it pairs the Rocchio Algorithm \cite{rocchio1971relevance} with a large-scale approximate nearest neighbor search based on ball trees \cite{shakhnarovish2005indyk}. The library aims at providing responsive content-based recommendations utilizing only user’s votes. Science Concierge, then, provides an open source solution to content-based scientific discovery.
 
 
 We tuned and tested the algorithm on a collection of scientific posters from the largest Neuroscience conference in the world, Society for Neuroscience (SfN) 2015. First, we cross-validated the LSA model to capture most of the variance contained in the topics. Second, we tuned the parameters of the algorithm to recommend posters that maximally resembled human curated classifications into poster sessions. We showed that our algorithm significantly outperformed a popular alternative based on keywords, improving suggestions further as it learned more from the user. A front-end interface that uses the algorithm in the back end is available at \href{http://www.scholarfy.net}{\texttt{http://www.scholarfy.net}}, where we used data from Society for Neuroscience (SfN) 2015 conference.
@@ -54,24 +56,26 @@ We obtained a license from the Society for Neuroscience (SfN) for the Neuroscien
 \subsection{Content-based recommendation of scientific documents}
 
 
-There are three main design principles behind Science Concierge. First, it aims at using the content of the documents rather than collaborative filter to prevent the Mathew effect, commonly found in recommendation systems [3]. This effect can be detrimental for scientific exploration. Second, it aims at proving suggestions as fast as possible. This means that users should get feedback as soon as they vote one item as relevant or irrelevant. Finally, it aims at being validated using some external input. Below we describe the methods to achieve these three goals.
+There are three main design principles behind Science Concierge. First, it aims at using the content of the documents rather than collaborative filter to prevent the Mathew effect, commonly found in recommendation systems  \cite{petersen2011quantitative}. This effect can be detrimental for scientific exploration. Second, it aims at proving suggestions as fast as possible. This means that users should get feedback as soon as they vote one item as relevant or irrelevant. Finally, it aims at being validated using some external input. Below we describe the methods to achieve these three goals.
 
 
 \begin{figure}[!ht]
-\textbf{Fig 1.} \textbf{Vector representation of documents} (A) Schematic of the workflow for converting abstracts into vector representations (B) Schematic of Rocchio Algorithm (C) Visualization of topics colored by human curated sessions using t-SNE on abstract vectors.
+\centering
+\includegraphics[width=3.5in]{algorithm_flow}
+\caption*{\textbf{Fig 1.} \textbf{Vector representation of documents} (A) Schematic of the workflow for converting abstracts into vector representations (B) Schematic of Rocchio Algorithm (C) Visualization of topics colored by human curated sessions using t-SNE on abstract vectors.}
 \end{figure}
 
 
 \subsection{Text preprocessing}
 
-Documents are tokenized by removing English stop words and stemming using the Porter Stemming algorithm [12]. The terms in the documents are uni-grams and bi-grams. This term document matrix is transformed by a term-frequency inverse document-frequency (tf-idf) function. Terms that appear fewer than 3 times were removed, and terms that have tf-idf greater than 0.8 were removed. The intuition behind this way of preprocessing is that we want to focus on words that are indicative of the document that they appear in, or, said differently, on words that “carry” the topic of the document.
+Documents are tokenized by removing English stop words and stemming using the Porter Stemming algorithm \cite{porter1980algorithm}. The terms in the documents are uni-grams and bi-grams. This term document matrix is transformed by a term-frequency inverse document-frequency (tf-idf) function. Terms that appear fewer than 3 times were removed, and terms that have tf-idf greater than 0.8 were removed. The intuition behind this way of preprocessing is that we want to focus on words that are indicative of the document that they appear in, or, said differently, on words that “carry” the topic of the document.
 
 \subsection{Latent Semantic Analysis}
 
-LSA is a simple topic modeling technique based on singular value decomposition [13]. The tf-idf matrix is transformed using Latent Semantic Analysis (LSA) to reduce noise and improve smoothness. This technique decomposes the document term matrix or, in our case, the sparse tf-idf matrix $X$ as a product of a left singular vector (U), a diagonal singular value matrix ($S$) and a right singular vector (V) as $X = USV^\top$, where the diagonal singular values in $S$ are ranked from highest to lowest. The number of vectors to choose depends on how accurately we want to capture the matrix $X$ [14]. In our case, this number will be chosen by cross validation. The intuition behind the use of LSA is that we want to discover groups of words that are equivalent in their meaning, as they should load onto the same singular vectors.
+LSA is a simple topic modeling technique based on singular value decomposition \cite{landauer1998introduction}. The tf-idf matrix is transformed using Latent Semantic Analysis (LSA) to reduce noise and improve smoothness. This technique decomposes the document term matrix or, in our case, the sparse tf-idf matrix $X$ as a product of a left singular vector (U), a diagonal singular value matrix ($S$) and a right singular vector (V) as $X = USV^\top$, where the diagonal singular values in $S$ are ranked from highest to lowest. The number of vectors to choose depends on how accurately we want to capture the matrix $X$ \cite{bishop2006pattern}. In our case, this number will be chosen by cross validation. The intuition behind the use of LSA is that we want to discover groups of words that are equivalent in their meaning, as they should load onto the same singular vectors.
 
 
-The pre-processing is relatively fast on purpose because the algorithm needs to rapidly adapt to changes in the conference. Even with the simple level of preprocessing provided by LSA, we can already start understanding how posters are separated into distinct topical areas. To visualize this, we transform the LSA vectors using a two dimensional reduction by t-Distributed Stochastic Neighbor Embedding (t-SNE) ([15], Fig. 1B), coloring each poster with its curated topical area from letter A through G. From the visualization, it is apparent that some topics are more clearly separable than others, at least as long as we are in a very low dimensional space.
+The pre-processing is relatively fast on purpose because the algorithm needs to rapidly adapt to changes in the conference. Even with the simple level of preprocessing provided by LSA, we can already start understanding how posters are separated into distinct topical areas. To visualize this, we transform the LSA vectors using a two dimensional reduction by t-Distributed Stochastic Neighbor Embedding (t-SNE) (\cite{van2008visualizing}, Fig. 1B), coloring each poster with its curated topical area from letter A through G. From the visualization, it is apparent that some topics are more clearly separable than others, at least as long as we are in a very low dimensional space.
 
 \subsection{Poster representation based on keywords}
 
@@ -80,26 +84,26 @@ The dataset used here also contained keywords. Searching by keywords is a popula
 
 \subsection{Rocchio Algorithm and Nearest Neighbor Assignment}
 
-The Rocchio algorithm is used to produce recommendations based on relevant and non-relevant documents previously voted by the user [16]. The original method works by using the term count vector but instead we use the LSA vectors. The method computes a preference vector by combining the vectors of the voted documents. Finally, the nearest neighbors of such resulting preference vector would be the suggestions.
+The Rocchio algorithm is used to produce recommendations based on relevant and non-relevant documents previously voted by the user \cite{rocchio1971relevance}. The original method works by using the term count vector but instead we use the LSA vectors. The method computes a preference vector by combining the vectors of the voted documents. Finally, the nearest neighbors of such resulting preference vector would be the suggestions.
 
 
-Mathematically, given a set of documents vectors that are found to be relevant by the user $\{r_1,r_2,…,r_n\}$ and another set of non-relevant documents $\{u_1,u_2,…,u_m\}$, the Rocchio algorithm finds a document vector that combines both types of documents as follows
+Mathematically, given a set of documents vectors that are found to be relevant by the user $\{r_1, r_2, \ldots, r_n\}$ and another set of non-relevant documents $\{u_1, u_2, \ldots, u_m\}$, the Rocchio algorithm finds a document vector that combines both types of documents as follows
 
 
-\begin{equation}
+\begin{equation} \label{eq:1}
  q = q_0 + \frac{\alpha}{N} \sum_{i=1}^N r_i - \frac{\beta}{M} \sum_{j=1}^M u_j
 \end{equation}
 
 where $q_0$ was originaly proposed as the mean document vector of an initial query made into the system, such as a search for a particular keyword. The parameters $\alpha$ and $\beta$ control how much the relevant and non-relevant documents affect the final query vector, respectively. In the case of our system, there is no such initial query $q_0$ and therefore the mean article replaces this term. The parameters $\alpha$ and $\beta$ will be found by cross validation using some external validation process.
 
 
-Once the query vector q has been defined for a user, a nearest neighbor search will be performed to retrieve suggested elements. In our implementation, we use ball trees to approximate a nearest neighbor search, which tradeoffs speed and accuracy relatively well [11].
+Once the query vector q has been defined for a user, a nearest neighbor search will be performed to retrieve suggested elements. In our implementation, we use ball trees to approximate a nearest neighbor search, which tradeoffs speed and accuracy relatively well \cite{shakhnarovish2005indyk}.
 
 \subsection{Measuring suggestion performance by using human curated classification}
 
 Each poster contained in this dataset has been manually classified into a topic by the organizers of the conference. The topic classification is based on a tree with three levels. For example, a poster might be classified with topic $F.01.r$, where $F$ is the broad area of study in Neuroscience, $01$ is a subarea of $F$, and $r$ is a further subdivision within $01$.  To validate many of the parameters in our performance tests, we use this topic classification as an indirect measure of how correct the suggestions are.
 
-We implicitly assume that a random attendee would be highly interested in one topic only and not interested in others. This means that users would tend to like poster from the same area. While this assumption may not be accurate for a large number of attendees, we believe in captures the intention behind the classification of topics in this particular SfN conference. To measure the quality of suggestions, then, we ask the system to suggest ten posters based on a set of “liked” posters from a particular topic. For each of the suggestions, we compute the distance between its topic and the topic of the liked posters, using as distance measure the lowest common ancestor in the topic tree [17]. Minimizing the average of the distances between the liked topic and the ten suggested posters will be set as the performance metric for our comparisons.
+We implicitly assume that a random attendee would be highly interested in one topic only and not interested in others. This means that users would tend to like poster from the same area. While this assumption may not be accurate for a large number of attendees, we believe in captures the intention behind the classification of topics in this particular SfN conference. To measure the quality of suggestions, then, we ask the system to suggest ten posters based on a set of “liked” posters from a particular topic. For each of the suggestions, we compute the distance between its topic and the topic of the liked posters, using as distance measure the lowest common ancestor in the topic tree \cite{aho1976finding}. Minimizing the average of the distances between the liked topic and the ten suggested posters will be set as the performance metric for our comparisons.
 
 \section{Results}
 
@@ -107,11 +111,20 @@ We implicitly assume that a random attendee would be highly interested in one to
 
 \subsubsection*{Number of components for LSA}
 
-One parameter of the LSA algorithm is the number of components of the SVD decomposition [14], which we find by cross validating on the distance to human curated topic classification as described in Methods. We randomly sampled one poster and liked it. Then, we ask the system to suggest ten posters and compute the average distance in human curated topic of those ten posters to the liked poster (Fig. 2). In this way, we were able to find that the appropriate number of components to be used should be around 100.
+One parameter of the LSA algorithm is the number of components of the SVD decomposition \cite{bishop2006pattern}, which we find by cross validating on the distance to human curated topic classification as described in Methods. We randomly sampled one poster and liked it. Then, we ask the system to suggest ten posters and compute the average distance in human curated topic of those ten posters to the liked poster (Fig. 2). In this way, we were able to find that the appropriate number of components to be used should be around 100.
+
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=3in]{performance_vs_components}
+\caption*{\textbf{Fig 2.} \textbf{Number of SVD components vs. performance of the algorithm to capture human curated topics}}
+\end{figure}
+
+
 
 \subsubsection*{Weight of relevant and non-relevant documents for Rocchio algorithm}
 
-The Rocchio algorithm differently weighs the importance of relevant documents with a parameter $\alpha$ and the importance of non-relevant with a parameter $\beta$ (see  Eq. 1). We tuned the parameters $\alpha$ and $\beta$ using a procedure similar to that used for finding the number of components in SVD.
+The Rocchio algorithm differently weighs the importance of relevant documents with a parameter $\alpha$ and the importance of non-relevant with a parameter $\beta$ (see  Eq. \ref{eq:1}). We tuned the parameters $\alpha$ and $\beta$ using a procedure similar to that used for finding the number of components in SVD.
 
 The experiment this time is done by liking one poster from a random topic and voting as non-relevant a poster from a different topic. We performed three experiments where we tested three distances of the non-relevant voted posters: distance 1 (1 subdivision away), distance 2 (in a difference subarea), and distance 3 (in a different area of study). For each of these experiments, we tried a grid of $\alpha$ and $\beta$ parameters and computed the average topic distance over a set of 1,000 simulations (Fig. 3). This is possible because we only have two free parameters here.
 
@@ -119,7 +132,8 @@ We found that voting as non-relevant those posters that are 1 distance away prod
 
 
 \begin{figure}[!ht]
-\textbf{Fig 3.} \textbf{Finding best parameters to weigh relevant and non-relevant votes}. Performance of the system as a function alpha and beta parameters for non-relevant documents that are 1 distance away (A), 2 dislike distance away (B), and 3 dislike distance away (C) in human curated topics.
+\centering
+\caption*{\textbf{Fig 3.} \textbf{Finding best parameters to weigh relevant and non-relevant votes}. Performance of the system as a function alpha and beta parameters for non-relevant documents that are 1 distance away (A), 2 dislike distance away (B), and 3 dislike distance away (C) in human curated topics.}
 \end{figure}
 
 \subsection{Algorithm comparison}
@@ -136,7 +150,8 @@ Science Concierge uses the abstracts to automatically extract topics and provide
 
 
 \begin{figure}[!ht]
-\textbf{Fig 4.} \textbf{Comparison of algorithms as they learn more from a simulated user}. Random suggestions’ performance is not necessarily 3 distance away in the topic tree, but remain constant with more votes. Keywords improve suggestions but Science concierge significantly improves upon that and event further with votes.
+\centering
+\caption*{\textbf{Fig 4.} \textbf{Comparison of algorithms as they learn more from a simulated user}. Random suggestions’ performance is not necessarily 3 distance away in the topic tree, but remain constant with more votes. Keywords improve suggestions but Science concierge significantly improves upon that and event further with votes.}
 \end{figure}
 
 Ideally, we want distances between documents induced by an algorithm to closely match the distances induced by human curated topics. Here, we tested this idea using the keyword model and the Science Concierge model. This is, we tested the correlation between the distance of two random documents using a model and the distance of those same documents in human curated topic space. We found that the Spearman rank correlation between these measures was significantly positive for both models ($p < 0.0001$) and that the correlation of the Science Concierge model ($\rho=0.442$) was significantly higher than the correlation of the keyword model ($\rho=0.164$), $p < 0.001$. To compare these relationships on a similar scale, we visualized the human curated distance vs. the z-score of the model’s distances (Fig. 5). Both measures reproduce human distances, but Science Concierge is better overall.
@@ -156,10 +171,10 @@ Discovering new and relevant scholarly material progressively requires algorithm
 One surprising finding in our analysis is that the posters voted as non-relevant were better left not influencing the final preference vector. In particular, when voted non-relevant posters were close in topic space to the liked posters, then the performance degraded. If those non-relevant posters were far away, then the performance remains unchanged. In the future, we want to expand the experiment to domains in which a large number of votes is casted. This may allow the algorithm to better understand topic preferences and therefore offer suggestions that exploit the knowledge built in non-relevant votes.
 
 
-The topic modeling technique used in our algorithm assumes that topics live on a linear space. While this assumption provides significant computational advantages, there might be cases where more complex modeling approaches may capture more subtle topical relationships. In the future, we will try non-linear probabilistic approaches such as Latent Dirichlet Allocation (LDA) or similar methods [18, 19], which recently have been shown to scale well [20]. However, in our own unreported experiments with this approach we found LDA to be inferior to LSA. To better capture entities embedded in the text, future research will also investigate how to use deep learning modeling of words and phrases [21, 22]. However, it is unclear how these methods cope with scalability. Our system may already provide an appropriate level of speed and accuracy for our domain.
+The topic modeling technique used in our algorithm assumes that topics live on a linear space. While this assumption provides significant computational advantages, there might be cases where more complex modeling approaches may capture more subtle topical relationships. In the future, we will try non-linear probabilistic approaches such as Latent Dirichlet Allocation (LDA) or similar methods \cite{blei2003latent, lancichinetti2015high}, which recently have been shown to scale well \cite{hoffman2010online}. However, in our own unreported experiments with this approach we found LDA to be inferior to LSA. To better capture entities embedded in the text, future research will also investigate how to use deep learning modeling of words and phrases \cite{mikolov2013efficient, pennington2014glove}. However, it is unclear how these methods cope with scalability. Our system may already provide an appropriate level of speed and accuracy for our domain.
 
 
-Future research could expand our system in many ways. The Rocchio algorithm’s dependency on nearest neighbors makes it inappropriate to exploit the potential richness available on large number of votes [23]. With long term users who provide hundreds or even thousands of votes, it may be more accurate to cast the recommendations as a classification problem [24]. It is unclear however when would be the right time to make such as switch.
+Future research could expand our system in many ways. The Rocchio algorithm’s dependency on nearest neighbors makes it inappropriate to exploit the potential richness available on large number of votes \cite{friedman2001elements}. With long term users who provide hundreds or even thousands of votes, it may be more accurate to cast the recommendations as a classification problem \cite{lavrenko2001relevance}. It is unclear however when would be the right time to make such as switch.
 
 Our system proposes a new way to discover scholarly material. Many similar systems (e.g., Google Scholar) do not release their algorithms, making them difficult to study. By opening our algorithm, we will engage the scientific community to collaborate. Moreover, our algorithm does not necessarily need to be constrained to scientific text as any document that can be represented as a vector can be fed into it (e.g., scientific figures, audio). In sum, our system provides an open and fast approach to accurately discover new research.
 
@@ -171,6 +186,9 @@ Titipat Achakulvisut was supported by the Royal Thai Government Scholarship gran
 \subsubsection*{Author Contributions}
 
 Titipat Achakulvisut (writing, programming, concept), Daniel E. Acuna (writing, programming, concept), Tulakan Ruangrong (programming), Konrad Kording (writing, concept).
+
+\bibliography{citations}{}
+\bibliographystyle{plain}
 
 
 \end{document}
