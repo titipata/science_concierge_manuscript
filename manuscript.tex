@@ -19,7 +19,7 @@
 \usepackage{pdfpages}
 
 
-\title{Science Concierge: A fast content-based recommendation system for scientific publicationse}
+\title{Science Concierge: A fast content-based recommendation system for scientific publications}
 
 \author[1]{Titipat Achakulvisut\thanks{titipat.a@u.northwestern.edu}}
 \author[3]{Daniel E. Acuna\thanks{This work is done when author is at Rehabilitation Institute of Chicago and Northwestern University}}
@@ -81,7 +81,7 @@ Documents are tokenized by removing English stop words and stemming using the Po
 
 \subsection{Latent Semantic Analysis}
 
-LSA is a simple topic modeling technique based on singular value decomposition \cite{landauer1998introduction}. The tf-idf matrix is transformed using Latent Semantic Analysis (LSA) to reduce noise and improve smoothness. This technique decomposes the document term matrix or, in our case, the sparse tf-idf matrix $X$ as a product of a left singular vector (U), a diagonal singular value matrix ($S$) and a right singular vector (V) as $X = USV^\top$, where the diagonal singular values in $S$ are ranked from highest to lowest. The number of vectors to choose depends on how accurately we want to capture the matrix $X$ \cite{bishop2006pattern}. In our case, this number will be chosen by cross validation. The intuition behind the use of LSA is that we want to discover groups of words that are equivalent in their meaning, as they should load onto the same singular vectors.
+LSA is a simple topic modeling technique based on singular value decomposition \cite{landauer1998introduction}. The tf-idf matrix is transformed using Latent Semantic Analysis (LSA) to reduce noise and improve smoothness. This technique decomposes the document term matrix or, in our case, the sparse tf-idf matrix $X$ as a product of a left singular vector ($U$), a diagonal singular value matrix ($S$) and a right singular vector ($V$) as $X = USV^\top$, where the diagonal singular values in $S$ are ranked from highest to lowest. The number of vectors to choose depends on how accurately we want to capture the matrix $X$ \cite{bishop2006pattern}. In our case, this number will be chosen by cross validation. The intuition behind the use of LSA is that we want to discover groups of words that are equivalent in their meaning, as they should load onto the same singular vectors.
 
 
 The pre-processing is relatively fast on purpose because the algorithm needs to rapidly adapt to changes in the conference. Even with the simple level of preprocessing provided by LSA, we can already start understanding how posters are separated into distinct topical areas. To visualize this, we transform the LSA vectors using a two dimensional reduction by t-Distributed Stochastic Neighbor Embedding (t-SNE) (\cite{van2008visualizing}, Fig. 1B), coloring each poster with its curated topical area from letter A through G. From the visualization, it is apparent that some topics are more clearly separable than others, at least as long as we are in a very low dimensional space.
@@ -106,7 +106,7 @@ Mathematically, given a set of documents vectors that are found to be relevant b
 where $q_0$ was originaly proposed as the mean document vector of an initial query made into the system, such as a search for a particular keyword. The parameters $\alpha$ and $\beta$ control how much the relevant and non-relevant documents affect the final query vector, respectively. In the case of our system, there is no such initial query $q_0$ and therefore the mean article replaces this term. The parameters $\alpha$ and $\beta$ will be found by cross validation using some external validation process.
 
 
-Once the query vector q has been defined for a user, a nearest neighbor search will be performed to retrieve suggested elements. In our implementation, we use ball trees to approximate a nearest neighbor search, which tradeoffs speed and accuracy relatively well \cite{shakhnarovish2005indyk}.
+Once the query vector $q$ has been defined for a user, a nearest neighbor search will be performed to retrieve suggested elements. In our implementation, we use ball trees to approximate a nearest neighbor search, which tradeoffs speed and accuracy relatively well \cite{shakhnarovish2005indyk}.
 
 \subsection{Measuring suggestion performance by using human curated classification}
 
