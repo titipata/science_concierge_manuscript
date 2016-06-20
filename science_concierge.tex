@@ -150,7 +150,7 @@ different weighting schemes describe in the previous section
 are transformed using Latent Semantic Analysis (LSA) to reduce noise and improve smoothness. This technique decomposes the weighting matrix $X$ as a product of a left singular vectors ($U$), a diagonal singular value matrix ($S$) and a right singular vectors ($V$) as $X = USV^\top$, where the diagonal singular values in $S$ are ranked from highest to lowest. The number of vectors to choose depends on how accurately we want to capture the matrix $X$ \cite{bishop2006pattern}, i.e. $X \approx U_r S_r V_r$ and $X_{LSA} = U_r S_r$ where $U_r, S_r, V_r$ are truncated matrices. In our case, this number will be chosen by cross validation. The intuition behind the use of LSA is that we want to discover groups of words that are equivalent in their meaning, as they should load onto the same singular vectors.
 
 
-Even with the simple level of preprocessing provided by LSA, we can already start understanding how posters are separated into distinct topical areas. To visualize this, we transform the LSA vectors using a two dimensional reduction by $t$-Distributed Stochastic Neighbor Embedding ($t$-SNE) (\cite{van2008visualizing}, Fig. 1C), coloring each poster with its curated topical area from letter A through G. From the visualization, it is apparent that some topics are more clearly separable than others, at least as long as we are in a very low dimensional space.
+Even with the simple level of preprocessing provided by LSA, we can already start understanding how posters are separated into distinct topical areas. To visualize this, we transform the LSA vectors using a two dimensional reduction by $t$-Distributed Stochastic Neighbor Embedding ($t$-SNE) (\cite{van2008visualizing}, Fig 1C), coloring each poster with its curated topical area from letter A through G. From the visualization, it is apparent that some topics are more clearly separable than others, at least as long as we are in a very low dimensional space.
 
 \subsection{Poster representation based on keywords}
 
@@ -202,7 +202,7 @@ $$q = \frac{\alpha}{N} \sum_{i=1}^N r_i - \frac{\beta}{M} \sum_{j=1}^{M} u_j$$
 
 \subsubsection*{Number of components for LSA}
 
-One parameter of the LSA algorithm is the number of components of the SVD decomposition \cite{bishop2006pattern}, which we find by cross validating on the distance to human curated topic classification as described in Methods. We randomly sampled one poster and liked it. Then, we ask the system to suggest ten posters and compute the average distance in human curated topic of those ten posters to the liked poster (Fig. 2). In this way, we were able to find that the appropriate number of components to be used should be around between 100 to 200. We select 150 components for later experiments described in paper.
+One parameter of the LSA algorithm is the number of components of the SVD decomposition \cite{bishop2006pattern}, which we find by cross validating on the distance to human curated topic classification as described in Methods. We randomly sampled one poster and liked it. Then, we ask the system to suggest ten posters and compute the average distance in human curated topic of those ten posters to the liked poster (Fig 2). In this way, we were able to find that the appropriate number of components to be used should be around between 100 to 200. We select 150 components for later experiments described in paper.
 
 
 \begin{figure}[!ht]
@@ -217,9 +217,9 @@ One parameter of the LSA algorithm is the number of components of the SVD decomp
 
 The Rocchio algorithm differently weighs the importance of relevant documents with a parameter $\alpha$ and the importance of non-relevant with a parameter $\beta$ (see  Eq. \ref{eq:1}). We tuned the parameters $\alpha$ and $\beta$ using a procedure similar to that used for finding the number of components in SVD.
 
-The experiment this time is done by liking one poster from a random topic and voting as non-relevant a poster from a different topic. We performed three experiments where we tested three distances of the non-relevant voted posters: distance 1 (1 subdivision away), distance 2 (in a difference subarea), and distance 3 (in a different area of study). For each of these experiments, we tried a grid of $\alpha$ and $\beta$ parameters and computed the average topic distance over a set of 1,000 simulations (Fig. 3). This is possible because we only have two free parameters here.
+The experiment this time is done by liking one poster from a random topic and voting as non-relevant a poster from a different topic. We performed three experiments where we tested three distances of the non-relevant voted posters: distance 1 (1 subdivision away), distance 2 (in a difference subarea), and distance 3 (in a different area of study). For each of these experiments, we tried a grid of $\alpha$ and $\beta$ parameters and computed the average topic distance over a set of 1,000 simulations (Fig 3). This is possible because we only have two free parameters here.
 
-We found that voting as non-relevant those posters that are 1 distance away produces large effects on performance. Interestingly, we found that the parameter $\beta$ almost always makes the performance decrease. This means that non-relevant posters should be used to filter out the recommendations rather modifying a user’s preference vector. We also found that the best values for the parameter $\alpha$ are always larger than 1. Additionally, we found that non-relevant posters that are 3 distance away in topic space have little effect on performance (Fig. 3). This is intuitive because disliking posters that are far away gives little information about the topic that a user may like. At the end, the best combination of parameters for non-relevant posters that are away 1 distance is $\alpha=1.8$ and $\beta=0$.
+We found that voting as non-relevant those posters that are 1 distance away produces large effects on performance. Interestingly, we found that the parameter $\beta$ almost always makes the performance decrease. This means that non-relevant posters should be used to filter out the recommendations rather modifying a user’s preference vector. We also found that the best values for the parameter $\alpha$ are always larger than 1. Additionally, we found that non-relevant posters that are 3 distance away in topic space have little effect on performance (Fig 3). This is intuitive because disliking posters that are far away gives little information about the topic that a user may like. At the end, the best combination of parameters for non-relevant posters that are away 1 distance is $\alpha=1.8$ and $\beta=0$.
 
 
 \begin{figure}[!ht]
@@ -235,12 +235,12 @@ In this section, we compare the performance of our algorithm against common alte
 For each of the algorithms tested below, we do the following simulation to estimate their performances. For each run of a simulation, we pick a poster at random and vote it as relevant. Then, we ask the algorithm to suggest ten posters based on that vote. We compute the average distance in human curated topic space between the suggestions and the liked poster. We then vote for another poster randomly selected from the same human curated topic as the first poster. We again ask the algorithm to suggest a set of ten posters and again we compute the average distance. We repeat this process ten times to obtain the average distance to human curated topics as a function of the number of votes. This simulation will help us understand the performance of the algorithms as they gather more votes from a simulated user.
 
 
-As a baseline for all comparisons, we compute the performance of a null model that suggests posters at random. This is necessary because the distribution of human curated topics is not uniform and therefore the distances could be distributed in unexpected ways. Not surprisingly, the average distance to the human curated topic remained constant with the number of votes (Fig. 4, Random) but it was below 3, which is the farthest possible distance. This baseline will allow us to compare performance against a proper null model.
+As a baseline for all comparisons, we compute the performance of a null model that suggests posters at random. This is necessary because the distribution of human curated topics is not uniform and therefore the distances could be distributed in unexpected ways. Not surprisingly, the average distance to the human curated topic remained constant with the number of votes (Fig 4, Random) but it was below 3, which is the farthest possible distance. This baseline will allow us to compare performance against a proper null model.
 
-Keywords are a common recommendation technique that relies on using human curated “tags” for each document. In our dataset (see section \ref{methods}), the authors themselves assigned multiple keywords by picking them from a predefined set, crafted by the organizers. We used these keywords to produce  recommendations by treating them as documents. We then model keyword counts by transforming them from the tf-idf matrix to 30 SVD dimensions. Preliminary analysis revealed that 30 dimensions was an appropriate number to capture most of the variability. Suggestions using keywords perform significantly better than random suggestions (paired $t(9999) = 120.08$, $p < 0.0001$) and keyword suggestion performance improves with the number of votes, but not significantly (paired $t(9998) = -1.851$, $p = 0.064$, Fig. 4). While keywords allow for better suggestions than the null model, authors would need to manually provide them.
+Keywords are a common recommendation technique that relies on using human curated “tags” for each document. In our dataset (see section \ref{methods}), the authors themselves assigned multiple keywords by picking them from a predefined set, crafted by the organizers. We used these keywords to produce  recommendations by treating them as documents. We then model keyword counts by transforming them from the tf-idf matrix to 30 SVD dimensions. Preliminary analysis revealed that 30 dimensions was an appropriate number to capture most of the variability. Suggestions using keywords perform significantly better than random suggestions (paired $t(9999) = 120.08$, $p < 0.0001$) and keyword suggestion performance improves with the number of votes, but not significantly (paired $t(9998) = -1.851$, $p = 0.064$, Fig 4). While keywords allow for better suggestions than the null model, authors would need to manually provide them.
 
 
-Science Concierge uses the abstracts to automatically extract topics and provide suggestions. We found that Science Concierge produces significantly better suggestions (Fig. 4) than keywords ($\Delta = 0.97$ $t(9999) = 138.26$, $p < 0.0001$),
+Science Concierge uses the abstracts to automatically extract topics and provide suggestions. We found that Science Concierge produces significantly better suggestions (Fig 4) than keywords ($\Delta = 0.97$ $t(9999) = 138.26$, $p < 0.0001$),
 term frequency
 ($\Delta = 0.3$ $t(9999) = 67.805$, $p < 0.0001$),
 log entropy
@@ -259,7 +259,7 @@ improve recommendations with votes}
 \end{figure}
 
 Ideally, we want distances between documents induced by an algorithm to closely match the distances induced by human curated topics. Here, we tested this idea using the keyword model and the Science Concierge model. This is, we tested the correlation between the distance of two random documents using a model and the distance of those same documents in human curated topic space.  Word vector had the highest correlation with human topics ($\rho = 0.48$), followed by tf-idf ($\rho = 0.43$), log-entropy ($\rho = 0.32$), term frequency ($\rho = 0.2$),
-and keywords ($\rho = 0.17$). To compare these relationships on a similar scale, we visualized the human curated distance vs. the z-score of the model’s distances (Fig. 5).
+and keywords ($\rho = 0.17$). To compare these relationships on a similar scale, we visualized the human curated distance vs. the z-score of the model’s distances (Fig 5).
 
 
 \begin{figure}[!ht]
@@ -305,7 +305,7 @@ Titipat Achakulvisut was supported by the Royal Thai Government Scholarship gran
 Titipat Achakulvisut (writing, programming, concept), Daniel E. Acuna (writing, programming, concept), Tulakan Ruangrong (programming), Konrad Kording (writing, concept).
 
 \bibliography{citations}{}
-\bibliographystyle{plain}
+\bibliographystyle{unsrt}
 
 
 \end{document}
