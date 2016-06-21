@@ -1,0 +1,147 @@
+\begin{thebibliography}{10}
+
+\bibitem{manning2008introduction}
+Manning CD, Raghavan P, Sch{\"u}tze H, et~al.
+\newblock Introduction to information retrieval. vol.~1.
+\newblock Cambridge university press Cambridge; 2008.
+
+\bibitem{chavalarias2010science}
+Chavalarias D, Ioannidis JP.
+\newblock Science mapping analysis characterizes 235 biases in biomedical
+  research.
+\newblock Journal of Clinical Epidemiology. 2010;63(11):1205--1215.
+
+\bibitem{petersen2011quantitative}
+Petersen AM, Jung WS, Yang JS, Stanley HE.
+\newblock Quantitative and empirical demonstration of the Matthew effect in a
+  study of career longevity.
+\newblock Proceedings of the National Academy of Sciences. 2011;108(1):18--23.
+
+\bibitem{li2010contextual}
+Li L, Chu W, Langford J, Schapire RE.
+\newblock A contextual-bandit approach to personalized news article
+  recommendation.
+\newblock In: Proceedings of the 19th International Conference on World Wide
+  Web. ACM; 2010. p. 661--670.
+
+\bibitem{bell2007lessons}
+Bell RM, Koren Y.
+\newblock Lessons from the Netflix prize challenge.
+\newblock ACM SIGKDD Explorations Newsletter. 2007;9(2):75--79.
+
+\bibitem{Ali11parallelcollaborative}
+Ali M, Johnson CC, Tang AK. Parallel Collaborative Filtering for Streaming
+  Data; 2011.
+
+\bibitem{lipscomb2000medical}
+Lipscomb CE.
+\newblock Medical subject headings (MeSH).
+\newblock Bulletin of the Medical Library Association. 2000;88(3):265.
+
+\bibitem{yoneya2007pure}
+Yoneya T, Mamitsuka H.
+\newblock PURE: a PubMed article recommendation system based on content-based
+  filtering.
+\newblock Genome informatics. 2007;18:267--276.
+
+\bibitem{gipp2009scienstein}
+Gipp B, Beel J, Hentschel C.
+\newblock Scienstein: A research paper recommender system.
+\newblock In: Proceedings of the International Conference on Emerging Trends in
+  Computing (ICETiC’09); 2009. p. 309--315.
+
+\bibitem{wang2011collaborative}
+Wang C, Blei DM.
+\newblock Collaborative topic modeling for recommending scientific articles.
+\newblock In: Proceedings of the 17th ACM SIGKDD International Conference on
+  Knowledge Discovery and Data Mining. ACM; 2011. p. 448--456.
+
+\bibitem{wesley2016babel}
+Wesley-Smith I, West JD.
+\newblock Babel: A Platform for Facilitating Research in Scholarly Article
+  Discovery.
+\newblock In: Proceedings of the 25th International Conference Companion on
+  World Wide Web. International World Wide Web Conferences Steering Committee;
+  2016. p. 389--394.
+
+\bibitem{rocchio1971relevance}
+Rocchio JJ.
+\newblock Relevance feedback in information retrieval. 1971;.
+
+\bibitem{shakhnarovish2005indyk}
+Shakhnarovish D. Indyk, Nearest-Neighbor Methods in Learning and Vision.
+\newblock The MIT Press; 2005.
+
+\bibitem{porter1980algorithm}
+Porter MF.
+\newblock An algorithm for suffix stripping.
+\newblock Program. 1980;14(3):130--137.
+
+\bibitem{lee2005empirical}
+Lee M, Pincombe B, Welsh M.
+\newblock An empirical evaluation of models of text document similarity.
+\newblock Cognitive Science. 2005;.
+
+\bibitem{pincombe2004comparison}
+Pincombe B.
+\newblock Comparison of human and latent semantic analysis (LSA) judgements of
+  pairwise document similarities for a news corpus.
+\newblock DTIC Document; 2004.
+
+\bibitem{mikolov2013distributed}
+Mikolov T, Sutskever I, Chen K, Corrado GS, Dean J.
+\newblock Distributed representations of words and phrases and their
+  compositionality.
+\newblock In: Advances in neural information processing systems; 2013. p.
+  3111--3119.
+
+\bibitem{landauer1998introduction}
+Landauer TK, Foltz PW, Laham D.
+\newblock An introduction to latent semantic analysis.
+\newblock Discourse Processes. 1998;25(2-3):259--284.
+
+\bibitem{bishop2006pattern}
+Bishop CM. Pattern Recognition and Machine Learning.
+\newblock Springer Science Business Media; 2006.
+
+\bibitem{van2008visualizing}
+Van~der Maaten L, Hinton G.
+\newblock Visualizing data using t-SNE.
+\newblock Journal of Machine Learning Research. 2008;9(2579-2605):85.
+
+\bibitem{aho1976finding}
+Aho AV, Hopcroft JE, Ullman JD.
+\newblock On finding lowest common ancestors in trees.
+\newblock SIAM Journal on Computing. 1976;5(1):115--132.
+
+\bibitem{hoffman2010online}
+Hoffman M, Bach FR, Blei DM.
+\newblock Online learning for latent dirichlet allocation.
+\newblock In: Advances in Neural Information Processing Systems; 2010. p.
+  856--864.
+
+\bibitem{mikolov2013efficient}
+Mikolov T, Chen K, Corrado G, Dean J.
+\newblock Efficient estimation of word representations in vector space.
+\newblock arXiv preprint arXiv:13013781. 2013;.
+
+\bibitem{pennington2014glove}
+Pennington J, Socher R, Manning CD.
+\newblock Glove: Global Vectors for Word Representation.
+\newblock In: EMNLP. vol.~14; 2014. p. 1532--1543.
+
+\bibitem{hopcroftfoundations}
+Hopcroft J, Kannan R. Foundations of Data Science, 2014;.
+
+\bibitem{friedman2001elements}
+Friedman J, Hastie T, Tibshirani R.
+\newblock The elements of statistical learning. vol.~1.
+\newblock Springer series in statistics Springer, Berlin; 2001.
+
+\bibitem{lavrenko2001relevance}
+Lavrenko V, Croft WB.
+\newblock Relevance based language models.
+\newblock In: Proceedings of the 24th annual international ACM SIGIR conference
+  on Research and development in information retrieval. ACM; 2001. p. 120--127.
+
+\end{thebibliography}
